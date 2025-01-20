@@ -1,0 +1,191 @@
+#!/bin/bash
+
+# Initialize variables
+options_run=""
+options_p=""
+options_ens=""
+
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+        --) 
+            # Skip separator
+            shift
+            ;;
+        -h)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        -i)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --params-file)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        -j)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --id)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --include-default)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        --file-type)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --file-type-out)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --line-sep)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --line-template)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --template-file)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --help-file-type)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        --file-in)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --file-out)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --arg-out-prefix)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --arg-prefix)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --env-prefix)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --env-out)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        -m)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --default-file)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --default-params)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --work-dir)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --max-workers)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        -t)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --timeout)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --shell)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        --echo)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        -f)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        --force)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        -a)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        --auto-dir)
+            options_ens="$options_ens $1"
+            shift
+            ;;
+        -o)
+            options_ens="$options_ens $1 $2"
+            shift 2
+            ;;
+        -p)
+            shift
+            # Collect everything after `-p` until the next option or end of input
+            while [[ "$#" -gt 0 && ! "$1" =~ ^- ]]; do
+                options_p="$options_p $1"
+                shift
+            done
+            options_p="-p $options_p"
+            ;;
+        -*) # Handle any other ensemble options starting with "-"
+            options_run="$options_run $1 $2"
+            shift 2
+            ;;
+        *) # Collect any ensemble standalone arguments
+            options_run="$options_run $1"
+            shift
+            ;;
+    esac
+done
+
+# Trim any leading/trailing whitespace from options
+options_p=$(echo "$options_p" | xargs)
+options_run=$(echo "$options_run" | xargs)
+options_ens=$(echo "$options_ens" | xargs)
+
+# Finally join param options to all run options
+options_ens="$options_ens $options_p"
+
+# Output for verification (remove or modify as needed in your script)
+echo ""
+echo "Run options: $options_run"
+echo "Ensemble options: $options_ens"
+echo ""
+echo ""
+
+# Call job run with shell (sequential) output and force option activated,
+# as well as desired ensemble arguments, and call runcx with -x
+# option activated to ensure use of runner for updating parameter files 
+# individual run options, and `-o {}` to signify use the rundir supplied by job run.
+#cmd="job run --shell -f ${args_ens} -- ${args_run} -x -o {}"
+cmd="python3 -m runner.job run --shell -f ${options_ens} -- ${options_run} -x -o {}"
+
+# Check to make sure command to be run looks ok:
+#echo
+#echo ${cmd} 
+#echo 
+
+# Run command:
+eval ${cmd}

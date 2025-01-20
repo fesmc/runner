@@ -1,0 +1,5 @@
+*pyc
+build
+*.cache
+.DS_Store
+runner.egg-info

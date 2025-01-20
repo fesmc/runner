@@ -1,0 +1,34 @@
+usage: job analyze [-h] [--out OUT]
+                   [-v OUTPUT_VARIABLES [OUTPUT_VARIABLES ...]] [--stats]
+                   [-l NAME=DIST [NAME=DIST ...]] [-J COST [COST ...]]
+                   expdir
+
+Analyze run results
+
+positional arguments:
+  expdir                experiment directory to analyze
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --out OUT             experiment directory to write the diagnostics to (by
+                        default same as expdir)
+
+model output:
+
+  -v OUTPUT_VARIABLES [OUTPUT_VARIABLES ...], --output-variables OUTPUT_VARIABLES [OUTPUT_VARIABLES ...]
+                        list of output variables to include in output.txt,
+                        does not necessarily enter in the likelihood
+  --stats               add statistics on model output
+
+likelihood:
+  likelihood is provided a list of distributions (same convention as job sample)
+
+  -l NAME=DIST [NAME=DIST ...], --likelihood NAME=DIST [NAME=DIST ...]
+                        NAME=SPEC where SPEC define a distribution: N?MEAN,STD
+                        or U?MIN,MAX or TYPE?ARG1[,ARG2 ...] where TYPE is any
+                        scipy.stats distribution with *shp, loc, scale
+                        parameters.
+  -J COST [COST ...], --cost COST [COST ...]
+                        output variables that shall be treated as the result
+                        of an objective (or cost) function, this is equivalent
+                        to have the likelihood N?0,1

@@ -1,0 +1,7 @@
+before_script:
+  - which tox
+  - tox --version
+
+tests:
+  script:
+      tox
