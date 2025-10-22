@@ -2,6 +2,10 @@
 
 Sample parameters, run model ensemble over multiple processors
 
+This package was originally developed by Mahé Perrette in the following repository:
+[https://github.com/fesmc/runner](https://github.com/perrette/runner)
+This repository is no longer under active development and future changes are expected to be added here directly.
+
 Requirements
 ============
 - Python 2.7 and 3
