@@ -25,7 +25,7 @@ Install
 1. Install `runner` to your Python installation via `pip`:
 
 ```
-pip install https://github.com/cxesmc/runner/archive/refs/heads/master.zip
+pip install https://github.com/fesmc/runner/archive/refs/heads/master.zip
 ```
 
 Now check that system command `job` is available by running `job -h`. 
