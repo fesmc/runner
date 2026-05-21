@@ -1,0 +1,2 @@
+- Production package, be careful, ask when unsure.
+- Maintain generality where possible, promote flexible solutions.
